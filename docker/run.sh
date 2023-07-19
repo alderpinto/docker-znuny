@@ -1,12 +1,12 @@
 #!/bin/bash
-VOLUME_DIR=${OTRS_ROOT:-/opt/znuny}
+VOLUME_DIR=${ZNUNY_ROOT:-/opt/znuny}
 
 function prepare_znuny () {
     echo "Preparing znuny..."
-    cp -rfp /app-files/znuny/* ${OTRS_ROOT}/
-    su -c "${OTRS_ROOT}/bin/znuny.Console.pl Maint::Config::Rebuild" -s /bin/bash znuny
-    su -c "${OTRS_ROOT}/bin/znuny.Console.pl Maint::Cache::Delete" -s /bin/bash znuny
-    ${OTRS_ROOT}/bin/znuny.SetPermissions.pl --znuny-user=znuny --web-group=nginx ${OTRS_ROOT}/
+    cp -rfp /app-files/znuny/* ${ZNUNY_ROOT}/
+    su -c "${ZNUNY_ROOT}/bin/znuny.Console.pl Maint::Config::Rebuild" -s /bin/bash znuny
+    su -c "${ZNUNY_ROOT}/bin/znuny.Console.pl Maint::Cache::Delete" -s /bin/bash znuny
+    ${ZNUNY_ROOT}/bin/znuny.SetPermissions.pl --znuny-user=znuny --web-group=nginx ${ZNUNY_ROOT}/
     rm -fr /app-files/znuny   
 }
 
@@ -23,7 +23,7 @@ if [ -d "$VOLUME_DIR" ]; then
 else
     echo "O volume ainda não foi criado."
     # Coloque aqui o código para criar o volume e executar a configuração inicial do ambiente
-    mkdir -p ${OTRS_ROOT}/
+    mkdir -p ${ZNUNY_ROOT}/
     prepare_znuny  
 fi
 

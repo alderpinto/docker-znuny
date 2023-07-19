@@ -1,7 +1,7 @@
 FROM nginx:1.23.4-alpine3.17-perl
 LABEL maintainer="Alder Pinto <alder.pinto@gmail.com>"
 ENV ZNUNY_VERSION=7.0.8
-ENV ZNUNY_ROOT "/opt/otrs"
+ENV ZNUNY_ROOT "/opt/znuny"
 
 WORKDIR /opt
 
@@ -23,14 +23,14 @@ perl-css-minifier-xs perl-dbd-pg perl-dbd-mysql perl-dbd-odbc perl-javascript-mi
 perl-encode-hanextra perl-data-optlist perl-io-gzip perl-pathtools perl-scalar-list-utils&&\
 cpanm CGI::Compile Plack::Middleware::Expires Plack::Middleware::Session::Cookie
 
-RUN wget https://download.znuny.org/releases/znuny-${OTRS_VERSION}.tar.gz && \
-tar xfz znuny-${OTRS_VERSION}.tar.gz && \
-mv ${OTRS_ROOT}-${OTRS_VERSION} ${OTRS_ROOT}
+RUN wget https://download.znuny.org/releases/znuny-${ZNUNY_VERSION}.tar.gz && \
+tar xfz znuny-${ZNUNY_VERSION}.tar.gz && \
+mv ${ZNUNY_ROOT}-${ZNUNY_VERSION} ${ZNUNY_ROOT}
 
-RUN adduser -h ${OTRS_ROOT} -G nginx -s /bin/sh -H -D znuny&&\
-${OTRS_ROOT}/bin/otrs.SetPermissions.pl --znuny-user=znuny --web-group=nginx &&\
-echo "*/5 * * * * ${OTRS_ROOT}/bin/znuny.Daemon.pl start >> /dev/null" >> /var/spool/cron/crontabs/otrs &&\
-cp -prf ${OTRS_ROOT}/Kernel/Config.pm.dist ${OTRS_ROOT}/Kernel/Config.pm
+RUN adduser -h ${ZNUNY_ROOT} -G nginx -s /bin/sh -H -D znuny&&\
+${ZNUNY_ROOT}/bin/otrs.SetPermissions.pl --znuny-user=znuny --web-group=nginx &&\
+echo "*/5 * * * * ${ZNUNY_ROOT}/bin/znuny.Daemon.pl start >> /dev/null" >> /var/spool/cron/crontabs/otrs &&\
+cp -prf ${ZNUNY_ROOT}/Kernel/Config.pm.dist ${ZNUNY_ROOT}/Kernel/Config.pm
 
 ADD supervisord.conf /etc/
 
@@ -45,8 +45,8 @@ rm -rf /root/.cpanm
 
 RUN mkdir /app &&\
 mkdir /app-files &&\
-mv ${OTRS_ROOT} /app-files/. &&\
-rm -rf ${OTRS_ROOT}-${OTRS_VERSION}.tar.gz &&\
+mv ${ZNUNY_ROOT} /app-files/. &&\
+rm -rf ${ZNUNY_ROOT}-${ZNUNY_VERSION}.tar.gz &&\
 chmod 755 /run.sh
 
 EXPOSE 8880 8881
