@@ -1,7 +1,7 @@
 
 DOCKER_ID ?= alderpinto
 IMAGE = znuny-lts
-VERSION ?= 6.3.4
+VERSION ?= 6.5.3
 
 .PHONY: build
 build:
