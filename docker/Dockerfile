@@ -1,6 +1,6 @@
 FROM nginx:1.23.4-alpine3.17-perl
 LABEL maintainer="Alder Pinto <alder.pinto@gmail.com>"
-ENV ZNUNY_VERSION=6.5.3
+ENV ZNUNY_VERSION=6.3.4
 ENV ZNUNY_ROOT "/opt/otrs"
 
 WORKDIR /opt
