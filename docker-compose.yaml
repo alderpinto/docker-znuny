@@ -5,9 +5,9 @@ services:
 ###Usuário: root@localhost
 ###Senha: GVYskvEXNPxLcu4V
   znuny:
-    image: alderpinto/znuny7:latest
+    image: alderpinto/otrs:6.0.30
     restart: always
-    container_name: znuny
+    container_name: otrs
     ports:
 #      - 443:443
       - 8880:8880
@@ -17,7 +17,7 @@ services:
 #      - ./letsencrypt:/etc/letsencrypt
 #      - ./Config.pm:/opt/otrs/Kernel/Config.pm
       - ./init:/app
-      - ./app:/opt/znuny
+      - ./app:/opt/otrs
     depends_on:
       - postgres
   postgres:
