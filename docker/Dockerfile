@@ -24,9 +24,9 @@ RUN wget https://download.znuny.org/releases/otrs-latest-6.0.tar.gz && \
 tar xfz otrs-latest-6.0.tar.gz && \
 mv /opt/otrs-6.0.30 /opt/otrs
 
-RUN adduser -h /opt/otrs -G nginx -s /bin/sh -H -D otrs &&\
-/opt/znuny/bin/otrs.SetPermissions.pl --otrs-user=otrs --web-group=nginx &&\
-echo "*/5 * * * * /opt/otrs/bin/otrs.Daemon.pl start >> /dev/null" >> /var/spool/cron/crontabs/otrs &&\
+RUN adduser -h /opt/otrs -G nginx -s /bin/sh -H -D otrs && \
+/opt/otrs/bin/otrs.SetPermissions.pl --otrs-user=otrs --web-group=nginx && \
+echo "*/5 * * * * /opt/otrs/bin/otrs.Daemon.pl start >> /dev/null" >> /var/spool/cron/crontabs/otrs && \
 cp -prf /opt/otrs/Kernel/Config.pm.dist /opt/otrs/Kernel/Config.pm
 
 ADD supervisord.conf /etc/
@@ -36,14 +36,14 @@ ADD run.sh /
 # Remove packages we won't need at runtime
 RUN apk del make gcc build-base gnupg perl perl-dev perl-app-cpanminus
 
-RUN rm /var/cache/apk/* &&\
+RUN rm /var/cache/apk/* && \
 # Remove CPAN cache
 rm -rf /root/.cpanm
 
-RUN mkdir /app &&\
-mkdir /app-files &&\
-mv /opt/otrs /app-files/. &&\
-rm -rf otrs-latest-6.0.tar.gz &&\
+RUN mkdir /app && \
+mkdir /app-files && \
+mv /opt/otrs /app-files/. && \
+rm -rf otrs-latest-6.0.tar.gz && \
 chmod 755 /run.sh
 
 EXPOSE 8880 8881

@@ -7,11 +7,11 @@ services:
   znuny:
     image: alderpinto/otrs:6.0.30
     restart: always
-    container_name: otrs
+    #container_name: otrs
     ports:
 #      - 443:443
-      - 8880:8880
-      - 8881:8881
+      - 8980:8880
+      - 8981:8881
     env_file: .env      
     volumes:
 #      - ./letsencrypt:/etc/letsencrypt
@@ -24,7 +24,7 @@ services:
 ###Usuário: znuny
 ###Senha: QNq6ieatFB9i2niW  
     image: postgres:15
-    container_name: postgres
+    #container_name: postgres
     restart: always
     environment:
       POSTGRES_USER: root
