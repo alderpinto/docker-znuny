@@ -18,6 +18,7 @@ services:
 #      - ./Config.pm:/opt/otrs/Kernel/Config.pm
       - ./init:/app
       - ./app:/opt/otrs
+      - ./dev:/src/dev
     depends_on:
       - postgres
   postgres:
