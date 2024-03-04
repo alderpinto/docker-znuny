@@ -9,8 +9,6 @@ ENV ZNUNY_VERSION_CLONEDB=6.5.2
 
 ENV ZNUNY_ROOT "/opt/otrs"
 
-#WORKDIR /opt
-
 # Note before you start:
 # First build a tar of the source code: tar -czf build/angora-src.tar.gz --exclude build lib/perl services gui
 
@@ -18,7 +16,7 @@ ENV ZNUNY_ROOT "/opt/otrs"
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 # Install apline packages for perl
-RUN apk add bash tar make gcc build-base gnupg perl perl-dev perl-app-cpanminus 
+RUN apk add bash tar make gcc build-base gnupg perl perl-dev perl-app-cpanminus git
 RUN apk add --no-cache perl-plack perl-cgi-emulate-psgi perl-starman@testing supervisor postgresql15-client certbot certbot-nginx \
 perl-datetime perl-dbi perl-archive-zip perl-authen-sasl perl-namespace-clean \
 perl-moo perl-math-random-mt-auto perl-crypt-random perl-yaml-libyaml \
@@ -46,6 +44,11 @@ echo "*/5 * * * * /opt/otrs/bin/otrs.Daemon.pl start >> /dev/null" >> /var/spool
 touch ${ZNUNY_ROOT}/var/tmp/firsttime && \
 cp -prf ${ZNUNY_ROOT}/Kernel/Config.pm.dist ${ZNUNY_ROOT}/Kernel/Config.pm
 
+RUN mkdir src && \
+git clone https://github.com/znuny/module-tools.git /src/module-tools && \
+cd /src/module-tools/ && \
+cpanm --notest --installdeps .
+
 #Supervisord configuration
 COPY supervisord.conf /etc/
 
@@ -53,7 +56,7 @@ COPY supervisord.conf /etc/
 COPY *.sh /
 
 # Remove packages we won't need at runtime
-RUN apk del make gcc build-base gnupg perl perl-dev perl-app-cpanminus
+RUN apk del make gcc build-base gnupg perl perl-dev perl-app-cpanminus git
 
 RUN rm /var/cache/apk/* && \
 # Remove CPAN cache
